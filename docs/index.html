@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- artifact:start -->
+<title>Plotto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Libre+Caslon+Display&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+/* Layout: a plot machine. One button at the head of the page; the masterplot prints below as a
+   logline, with Cook's Blueprint (the story on a timeline) folded under it; a second screen hands it to a writer.
+   Blue ink marks the story's structure; red pencil marks what Cook changed. */
+:root {
+  --paper: #f6f7f9;
+  --sheet: #ffffff;
+  --ink: #1a1e26;
+  --ink-2: #4f5767;
+  --ink-3: #6e7684;
+  --rule: #dbdfe5;
+  --rule-2: #c4cad3;
+  --accent: #2a49a8;
+  --accent-ink: #ffffff;
+  --accent-wash: #e8edfa;
+  --pencil: #b8331f;
+  --display: "Libre Caslon Display", "Libre Caslon Text", Georgia, serif;
+  --text: "Libre Caslon Text", Georgia, "Times New Roman", serif;
+  --type: "Courier Prime", "Courier New", Courier, monospace;
+  --radius: 4px;
+  --gutter: clamp(16px, 4vw, 40px);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0f1217; --sheet: #161a21; --ink: #e7e9ed; --ink-2: #aab1bd; --ink-3: #848c99;
+    --rule: #272d37; --rule-2: #39414e; --accent: #93abff; --accent-ink: #0c1222;
+    --accent-wash: #1a2442; --pencil: #ff8f7c; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0f1217; --sheet: #161a21; --ink: #e7e9ed; --ink-2: #aab1bd; --ink-3: #848c99;
+  --rule: #272d37; --rule-2: #39414e; --accent: #93abff; --accent-ink: #0c1222;
+  --accent-wash: #1a2442; --pencil: #ff8f7c; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 16px/1.5 var(--text);
+  padding-inline: var(--gutter);
+  padding-block: 0 64px;
+}
+button, input, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+[hidden] { display: none !important; }
+
+.wrap { max-width: 1120px; margin-inline: auto; }
+
+/* ---------- top bar */
+.top { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; padding-block: 28px 18px; border-bottom: 1px solid var(--rule); margin-bottom: 30px; }
+.wordmark { font: 2.15rem/1 var(--display); letter-spacing: .2em; text-transform: uppercase; margin: 0; }
+.byline { font: .78rem/1.2 var(--type); color: var(--ink-3); letter-spacing: .04em; }
+
+/* ---------- shared type */
+.eyebrow { font: 700 .74rem/1.3 var(--type); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); margin: 0 0 6px; }
+.title { font: 1.85rem/1.15 var(--display); margin: 0 0 6px; text-wrap: balance; }
+.hint { color: var(--ink-2); margin: 0 0 18px; max-width: 62ch; }
+h3.part { font: 700 .78rem/1.2 var(--type); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-2); margin: 0 0 14px; }
+
+/* ---------- buttons */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--rule-2); background: var(--sheet);
+  border-radius: var(--radius); padding: 9px 14px; font: 700 .82rem/1 var(--type); letter-spacing: .05em; text-transform: uppercase;
+}
+.btn:hover { border-color: var(--accent); color: var(--accent); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn.primary:hover { filter: brightness(1.08); color: var(--accent-ink); }
+.btn.big { padding: 13px 20px; font-size: .9rem; }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.btn.link { border-color: transparent; background: none; padding-inline: 6px; color: var(--ink-2); }
+.btn.link:hover { color: var(--accent); }
+.row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+
+/* ---------- the machine's two controls */
+.console { display: grid; gap: 14px; margin-bottom: 30px; }
+.controls { display: flex; flex-wrap: wrap; align-items: stretch; gap: 12px; }
+
+/* the machine at work: Cook's numbers tick past while the plot is assembled */
+.tape { font: .8rem/1.5 var(--type); color: var(--ink-2); margin: 0; min-height: 1.5em; overflow-wrap: anywhere; }
+.tape b { color: var(--accent); font-weight: 700; }
+.result { transition: opacity .2s ease; }
+.result.working { opacity: .3; }
+
+/* ---------- the printed plot */
+.sheet { background: var(--sheet); border: 1px solid var(--rule); border-radius: var(--radius); padding: clamp(18px, 4vw, 44px); }
+.sheet-head { border-bottom: 1px solid var(--rule); padding-bottom: 22px; margin-bottom: 18px; }
+.premise { font: italic clamp(1.3rem, 1rem + 1.4vw, 1.8rem)/1.42 var(--text); margin: 0; max-width: 46ch; text-wrap: pretty; }
+.sheet-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 270px); gap: 40px; align-items: start; }
+@media (max-width: 860px) { .sheet-grid { grid-template-columns: minmax(0, 1fr); gap: 28px; } .sheet-grid .cast-col { order: -1; } }
+.cast { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 6px 14px; margin: 0; font-size: .95rem; }
+.cast dt { font-weight: 700; }
+.cast dd { margin: 0; color: var(--ink-2); }
+.who { text-decoration: underline dotted var(--rule-2); text-underline-offset: 4px; }
+.who:hover { text-decoration-color: var(--accent); }
+.appos { color: var(--ink-2); }
+.obj { font: 700 .92em/1 var(--type); }
+
+/* the story: a spine with one node per situation; subplots run in a lane beside it */
+.story { --x: 10px; list-style: none; margin: 0; padding: 0; display: grid; gap: 26px; position: relative; }
+.story::before { content: ""; position: absolute; left: calc(var(--x) - 1px); top: 12px; bottom: 12px; width: 2px; background: var(--rule-2); }
+.beat { display: grid; grid-template-columns: 20px minmax(0, 1fr); column-gap: 18px; position: relative; }
+.node { justify-self: center; width: 14px; height: 14px; margin-top: 2px; border-radius: 50%; background: var(--sheet); border: 2px solid var(--accent); position: relative; z-index: 1; }
+.is-central > .node { width: 20px; height: 20px; margin-top: -1px; background: var(--accent); }
+.is-ending > .node { background: var(--ink); border-color: var(--ink); box-shadow: 0 0 0 3px var(--sheet), 0 0 0 5px var(--ink); }
+.is-central.is-ending > .node { background: var(--accent); border-color: var(--accent); box-shadow: 0 0 0 3px var(--sheet), 0 0 0 5px var(--accent); }
+.beat-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; margin: 0 0 5px; }
+.phase { font: 700 .72rem/1.3 var(--type); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-2); }
+.is-central .phase, .is-ending .phase { color: var(--accent); }
+.thread { font: italic .86rem/1.3 var(--text); color: var(--ink-3); }
+.beat-text { margin: 0; font-size: 1.06rem; line-height: 1.6; max-width: 64ch; text-wrap: pretty; }
+
+.branch { position: relative; padding-left: 38px; }
+.branch::before, .branch::after { content: ""; position: absolute; left: var(--x); width: 39px; height: 18px; border: 0 dashed var(--accent); border-right-width: 2px; }
+.branch::before { top: -14px; border-top-width: 2px; border-top-right-radius: 16px; }
+.branch::after { bottom: -14px; border-bottom-width: 2px; border-bottom-right-radius: 16px; }
+.branch-head { margin: 0 0 12px 38px; }
+.lane { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; position: relative; }
+.lane::before { content: ""; position: absolute; left: 9px; top: -30px; bottom: -4px; border-left: 2px dashed var(--accent); opacity: .55; }
+.lane .node { width: 10px; height: 10px; margin-top: 6px; border-width: 2px; }
+.lane .beat-text { font-size: 1rem; }
+.branch .phase { color: var(--accent); }
+
+.sheet-foot { margin-top: 22px; padding-top: 22px; border-top: 1px solid var(--rule); }
+
+/* Cook's Blueprint: the full plot, folded under the logline */
+.blueprint > summary, .working > summary { list-style: none; cursor: pointer; width: max-content; max-width: 100%; }
+.blueprint > summary::-webkit-details-marker, .working > summary::-webkit-details-marker { display: none; }
+.blueprint > summary { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; padding-block: 4px; }
+.bp-title { font: 700 .84rem/1.3 var(--type); letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }
+.bp-meta { font: .8rem/1.3 var(--type); color: var(--ink-3); }
+.blueprint > summary:hover .bp-title, .working > summary:hover { text-decoration: underline; text-underline-offset: 3px; }
+.bp-title::before, .working > summary::before { content: "▸"; display: inline-block; width: 1em; margin-right: .45em; text-align: center; transform-origin: 50% 50%; transition: transform .15s ease; }
+.blueprint[open] > summary .bp-title::before, .working[open] > summary::before { transform: rotate(90deg); }
+.blueprint[open] > summary { margin-bottom: 26px; }
+.working { margin-top: 34px; padding-top: 20px; border-top: 1px solid var(--rule); }
+.working > summary { font: 700 .76rem/1.3 var(--type); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
+.working > summary:hover { color: var(--accent); }
+.working p { font-size: .92rem; color: var(--ink-2); margin: 12px 0 10px; max-width: 70ch; }
+.notation { font: .8rem/1.55 var(--type); color: var(--ink-2); background: var(--paper); border: 1px solid var(--rule); border-radius: var(--radius); padding: 14px 16px; margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; max-height: 420px; overflow: auto; }
+
+/* print-in: each situation arrives in turn after the machine has run */
+@keyframes arrive { from { opacity: 0; transform: translateY(6px); } }
+.printing .sheet-head, .printing .blueprint, .printing .sheet-foot { animation: arrive .35s ease backwards; animation-delay: calc(var(--i, 0) * 70ms); }
+@media (prefers-reduced-motion: reduce) { .printing * { animation: none !important; } .result, .bp-title::before, .working > summary::before { transition: none; } }
+
+/* ---------- the writer */
+.back { margin: -8px 0 18px -6px; }
+.output-box { margin-bottom: 30px; }
+
+.genres { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { border: 1px solid var(--rule-2); background: var(--sheet); border-radius: 999px; padding: 6px 13px; font-size: .95rem; }
+.chip:hover { border-color: var(--accent); }
+.chip[aria-checked="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.other { width: 12em; max-width: 100%; border: 1px solid var(--rule-2); border-radius: 999px; padding: 6px 13px; background: var(--sheet); }
+.field-label { display: block; font: 700 .76rem/1.3 var(--type); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); margin-bottom: 6px; }
+.notes { display: block; width: 100%; min-height: 64px; resize: vertical; padding: 10px 12px; border: 1px solid var(--rule-2); border-radius: var(--radius); background: var(--sheet); margin: 0; }
+.engine { font: .78rem var(--type); color: var(--ink-3); }
+.email-gate { display: grid; gap: 6px; max-width: 34rem; }
+.email { width: 100%; padding: 10px 12px; border: 1px solid var(--rule-2); border-radius: var(--radius); background: var(--sheet); }
+.notice { font-size: .86rem; line-height: 1.45; color: var(--ink-2); margin: 2px 0 0; max-width: 62ch; }
+.notice a { color: var(--accent); }
+.output {
+  margin-top: 0; background: var(--sheet); border: 1px solid var(--rule-2); border-radius: var(--radius);
+  padding: clamp(18px, 4vw, 36px); min-height: 160px; overflow-wrap: anywhere;
+}
+.output.idle { color: var(--ink-3); display: grid; place-items: center; text-align: center; font: .9rem var(--type); }
+.output h2, .output h3, .output h4 { font-family: var(--display); font-weight: 400; line-height: 1.2; margin: 1.1em 0 .4em; text-wrap: balance; }
+.output h2 { font-size: 1.7rem; margin-top: 0; }
+.output h3 { font-size: 1.25rem; }
+.output h4 { font-size: 1.05rem; }
+.output p { margin: 0 0 .85em; max-width: 68ch; }
+.output ul, .output ol { margin: 0 0 .9em; padding-left: 1.2em; max-width: 68ch; }
+.output li { margin-bottom: .3em; }
+.status { font: .8rem var(--type); color: var(--ink-2); margin: 0; min-height: 1.2em; }
+.status.warn { color: var(--pencil); }
+.thinking::after { content: "…"; animation: blink 1.2s steps(3, end) infinite; }
+@keyframes blink { 50% { opacity: .2; } }
+@media (prefers-reduced-motion: reduce) { .thinking::after { animation: none; } }
+.out-actions { margin-top: 14px; }
+
+.toast { position: fixed; left: 50%; bottom: calc(env(safe-area-inset-bottom, 0px) + 20px); transform: translateX(-50%); background: var(--ink); color: var(--paper); font: .82rem var(--type); padding: 8px 14px; border-radius: var(--radius); pointer-events: none; }
+.footer { margin-top: 56px; padding-top: 16px; border-top: 1px solid var(--rule); font: .76rem/1.5 var(--type); color: var(--ink-3); }
+</style>
+<!-- artifact:head-end -->
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1 class="wordmark">Plotto</h1>
+    <span class="byline">A plot machine after William Wallace Cook, 1928</span>
+  </header>
+
+  <main>
+    <section id="screen-plot" aria-labelledby="plot-title">
+      <div class="console">
+        <div>
+          <h2 class="title" id="plot-title" tabindex="-1">One of 13,950 masterplots</h2>
+          <p class="hint">Press Generate for one of the 13,950 masterplots in Cook’s chart. Behind it, the machine builds a fuller story from Cook’s blueprints: open <b>Cook’s Blueprint</b> under the masterplot to read it. For the full experience, choose <b>Interpret with AI</b>, which sends the plot to an AI writer in the genre you pick.</p>
+        </div>
+        <div class="controls">
+          <button class="btn primary big" id="generate" type="button">Generate random plot</button>
+        </div>
+        <p class="tape" id="tape" role="status"></p>
+      </div>
+      <div class="result" id="result"></div>
+    </section>
+
+    <section id="screen-write" aria-labelledby="write-title" hidden>
+      <button class="btn link back" id="back" type="button">← Back to the plot</button>
+      <div class="console">
+        <div>
+          <p class="eyebrow">AI writer</p>
+          <h2 class="title" id="write-title" tabindex="-1">Interpret the plot</h2>
+          <p class="hint">Choose a genre and press Interpret. The AI writer takes the masterplot and Cook’s Blueprint as raw material, shapes them into one story that makes sense, and writes it up as a treatment.</p>
+        </div>
+        <div class="genres" role="radiogroup" aria-label="Genre" id="genres"></div>
+        <div>
+          <label class="field-label" for="notes">Notes</label>
+          <textarea class="notes" id="notes" placeholder="Optional: setting, era, tone, or “make Arthur a woman”"></textarea>
+        </div>
+        <div class="email-gate" id="email-gate" hidden>
+          <label class="field-label" for="writer-email">Your email address</label>
+          <input class="email" type="email" id="writer-email" name="email" autocomplete="email" inputmode="email" spellcheck="false" placeholder="you@example.com">
+          <p class="notice" id="email-notice"></p>
+        </div>
+        <div class="row">
+          <button class="btn primary" id="interpret-go" type="button">Interpret plot</button>
+          <button class="btn" id="interpret-stop" type="button" hidden>Stop</button>
+          <button class="btn link" id="prompt-copy" type="button">Copy prompt</button>
+          <span class="engine" id="engine"></span>
+        </div>
+        <p class="status" id="interpret-status" role="status"></p>
+      </div>
+      <div class="output-box" id="output-box" hidden>
+        <div class="output" id="interpret-out" aria-live="polite"></div>
+        <div class="row out-actions"><button class="btn" id="out-copy" type="button" disabled>Copy treatment</button></div>
+      </div>
+      <div id="write-plot"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    Plotto: A New Method of Plot Suggestion for Writers of Creative Fiction, by William Wallace Cook (1928). 1,462 conflicts; A is the male protagonist, B the female.
+  </footer>
+</div>
+<div class="toast" id="toast" role="status" hidden></div>
+<script src="plotto-data.js"></script>
+<script src="engine.js"></script>
+<script src="config.js"></script>
+<script src="app.js"></script>
+<!-- artifact:end -->
+</body>
+</html>
