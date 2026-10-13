@@ -226,20 +226,24 @@ It wraps the plot in a genre and asks a writer (an LLM) to:
 - keep the masterplot's shape, its central situation and its ending;
 - check, before finishing, that the story makes logical sense (cause and effect, where each character
   is and what they know, motives, relationships) and fix what does not;
-- write as a specialist in the genre, following a brief for it: the world such stories are set in, their
-  voice, what their readers expect, who opposes the protagonist, how Cook's situations translate into
+- set the story in the genre, following a brief for it: the world such stories are set in, what their
+  readers expect, who opposes the protagonist, how Cook's situations translate into
   that world (an inheritance becomes insurance money in noir, a throne in fantasy, water rights in a
   western), how such stories end, and the clichés to avoid. Each of the twelve genres has its own brief
-  (`GENRE_BRIEFS` in `docs/app.js`); a genre typed in by hand gets an instruction to work out its own
-  conventions first. The brief comes late in the prompt, where a model weighs it most; the treatment
+  (`GENRE_BRIEFS` in `docs/app.js`). The brief comes late in the prompt, where a model weighs it most; the treatment
   opens with a *World* section so the writer commits to the genre before the characters; and the final
-  check asks whether a reader of the genre would recognize the story as theirs. The local server also
-  names the genre in the model's system message;
+  check asks whether the world, conflicts and outcome keep the brief. The Apps Script also names the
+  genre in the model's system message;
+- write it up plainly: the genre decides the story, not the prose. Every section is a mechanical,
+  literal account (present tense, one event per sentence where possible, no figurative language,
+  atmosphere, rhetorical questions or commentary). The synopsis is an expanded logline that follows
+  the situations in order and ends with one sentence stating the outcome; there is no separate
+  Ending section;
 - never refer to how the story was made: the treatment may not mention Plotto, Cook, the masterplot,
   clauses, the central situation, lead-ups, carry-ons, subplots, steps, conflict numbers, Purpose and
   Obstacle as terms, the genre brief, working names, character symbols or anything in brackets. The
   request says so at the start and as its very last rule, and the format's own wording avoids those
-  terms (the Ending section asks how the story ends, not how the C clause plays out).
+  terms (the synopsis's last sentence states how the story ends, not how the C clause plays out).
 
 ## 12. How the site implements the system
 

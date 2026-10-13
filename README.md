@@ -10,8 +10,8 @@ from it, an ending Cook marks for the masterplot, any subplot, and the character
 **Cook's Blueprint** under the logline to read it.
 
 For the full experience, choose **Interpret with AI**. An AI writer (Claude) takes the plot as raw
-material and, in the genre you pick, writes a story treatment: title, logline, world, characters,
-synopsis and ending. Interpretations are free, one per email address.
+material and, in the genre you pick, writes a plain story treatment: title, logline, world, characters
+and a mechanical synopsis that ends on the outcome. Interpretations are free, one per email address.
 
 [SYSTEM-MAP.md](SYSTEM-MAP.md) explains how Plotto works and how the machine follows Cook's method.
 

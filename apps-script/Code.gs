@@ -57,7 +57,7 @@ const TOP_PRICE = [10, 50];
 const FALLBACK_MODELS = new Set(["claude-fable-5-1", "claude-opus-5-5", "claude-opus-5", "claude-sonnet-5-5"]);
 const SYSTEM =
   "You are a story developer. You interpret plot outlines made with PLOTTO, William Wallace Cook's 1928 " +
-  "plot-suggestion system, as genre story treatments, in the format the user asks for.";
+  "plot-suggestion system as plain, mechanical synopses of genre stories, in the format the user asks for.";
 
 // Common throwaway-address services. Extend as needed.
 const DISPOSABLE = new Set([
@@ -279,7 +279,7 @@ function askClaude(prompt, genre, props) {
   const body = {
     model: props.model,
     max_tokens: props.maxTokens,
-    system: genre ? `${SYSTEM} This one is ${genre}: write as a specialist in ${genre} fiction would, keeping to the genre brief in the request.` : SYSTEM,
+    system: genre ? `${SYSTEM} This one is ${genre}: set the story in ${genre}'s world, keeping to the genre brief, and write it up in the request's plain style.` : SYSTEM,
     messages: [{ role: "user", content: prompt }],
     // Adaptive thinking lets the model plan the story and run the prompt's logic check before it writes;
     // effort sets how much. (Models older than the 4.6 generation don't accept this.)
