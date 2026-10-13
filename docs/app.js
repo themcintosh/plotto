@@ -273,9 +273,8 @@
   /**
    * A plot as the page shows it: the masterplot as a logline, and under it, folded, Cook's Blueprint
    * (the full plot as a story, its characters, and the same plot in Cook's notation).
-   * withAction: the opening screen also offers the way on to the AI writer.
    */
-  function sheet(plot, withAction) {
+  function sheet(plot) {
     return h(
       "article",
       { class: "sheet", "aria-label": "Your plot" },
@@ -297,10 +296,7 @@
           h("p", null, "The same plot in Cook’s conflict numbers and character symbols. This is what the AI writer receives."),
           h("pre", { class: "notation" }, E.plotToText(plot))
         )
-      ),
-      withAction
-        ? h("footer", { class: "sheet-foot" }, h("button", { class: "btn primary big", type: "button", id: "to-write", onclick: () => showScreen("write") }, "Interpret with AI →"))
-        : null
+      )
     );
   }
 
@@ -313,7 +309,12 @@
 
   function renderResult(printing) {
     const box = $("result");
-    box.replaceChildren(G.plot ? sheet(G.plot, true) : "");
+    // The opening screen offers the way on to the AI writer, centred beneath the plot.
+    box.replaceChildren(
+      ...(G.plot
+        ? [sheet(G.plot), h("div", { class: "next", style: "--i:2" }, h("button", { class: "btn primary big", type: "button", id: "to-write", onclick: () => showScreen("write") }, "Interpret with AI →"))]
+        : [])
+    );
     box.classList.toggle("printing", !!printing && !reduceMotion);
   }
 
@@ -370,25 +371,19 @@
     store.set("screen", next);
     $("screen-plot").hidden = next !== "plot";
     $("screen-write").hidden = next !== "write";
-    if (next === "write") $("write-plot").replaceChildren(sheet(G.plot, false));
+    if (next === "write") $("write-plot").replaceChildren(sheet(G.plot));
     if (quiet) return;
     window.scrollTo({ top: 0, behavior: "auto" });
-    $(next === "write" ? "write-title" : "plot-title").focus({ preventScroll: true });
+    $(next === "write" ? "write-title" : "plot-intro").focus({ preventScroll: true });
   }
   $("back").addEventListener("click", () => showScreen("plot"));
 
   // ------------------------------------------------------------------ interpretation
   const GENRES = ["Noir", "Science fiction", "Fantasy", "Horror", "Romance", "Thriller", "Mystery", "Western", "Historical", "Comedy", "Gothic", "Literary"];
-  const I = Object.assign({ genre: "Noir", other: "", notes: "" }, store.get("interpret") || {});
+  const savedI = store.get("interpret") || {};
+  const I = { genre: GENRES.includes(savedI.genre) ? savedI.genre : "Noir" };
 
   function renderGenres() {
-    const other = h("input", { class: "other", type: "text", id: "genre-other", placeholder: "Other genre…", value: I.other, "aria-label": "Other genre" });
-    other.addEventListener("input", () => {
-      I.other = other.value;
-      I.genre = other.value.trim() ? "" : I.genre || "Noir";
-      store.set("interpret", I);
-      for (const b of $("genres").querySelectorAll(".chip")) b.setAttribute("aria-checked", b.textContent === I.genre ? "true" : "false");
-    });
     $("genres").replaceChildren(
       ...GENRES.map((g) =>
         h(
@@ -400,18 +395,16 @@
             "aria-checked": I.genre === g ? "true" : "false",
             onclick: () => {
               I.genre = g;
-              I.other = "";
               store.set("interpret", I);
               renderGenres();
             },
           },
           g
         )
-      ),
-      other
+      )
     );
   }
-  const genre = () => (I.other.trim() || I.genre || "Noir").slice(0, 80);
+  const genre = () => I.genre;
 
   /**
    * A brief for each genre, so the writer knows what makes it that genre: where and when such stories
@@ -492,7 +485,7 @@
       avoid: "Cartoon villains, every problem settled by a quick draw, landscape as mere backdrop, stereotyped Native characters.",
     },
     Historical: {
-      world: "A specific, real period and place, chosen to fit the plot (the writer's notes may name one). Its politics, customs, work, class and technology limit what people can do.",
+      world: "A specific, real period and place, chosen to fit the plot. Its politics, customs, work, class and technology limit what people can do.",
       voice: "Grounded and textured, with period detail woven in rather than listed, and dialogue that suggests the era without pastiche.",
       promise: "People shaped by their time, whose private conflict plays out against real forces of the period (war, reform, plague, migration, law), and who think and believe as people of their age did.",
       opposition: "The period's institutions and limits (law, church, class, the roles allowed to men and women, money, war), and personal rivals.",
@@ -538,20 +531,15 @@
     ["avoid", "Avoid"],
   ];
 
-  /** The genre section of the prompt: the brief, or, for a genre typed in by hand, an instruction to work one out. */
+  /** The genre section of the prompt: the brief for the chosen genre. */
   function genreBrief(genreName) {
-    const key = Object.keys(GENRE_BRIEFS).find((k) => k.toLowerCase() === genreName.trim().toLowerCase());
-    const brief = key && GENRE_BRIEFS[key];
-    if (!brief)
-      return [
-        `There is no ready-made brief for ${genreName}. Before you write, work out its conventions for yourself, as a specialist would: the world such stories are set in, their voice, what their readers expect, who or what opposes the protagonist, how situations like Cook's translate into that world, how such stories end, and the clichés to avoid. Then follow those conventions as closely as you would a brief.`,
-      ];
+    const brief = GENRE_BRIEFS[genreName] || GENRE_BRIEFS.Noir;
     return BRIEF_FIELDS.map(([key, name]) => `- ${name}: ${brief[key]}`);
   }
 
   // The reading rules follow Cook's introduction and his Instruction Manual (Lessons 2, 3, 5 and 6).
   // The genre brief comes last, just before the checks and the format, where a model weighs it most.
-  function buildPrompt(plot, genreName, notes) {
+  function buildPrompt(plot, genreName) {
     return [
       `You are a story developer who specializes in ${genreName} fiction. Below is a plot built with PLOTTO, William Wallace Cook's 1928 system of plot suggestion. Fashion it into a ${genreName} story that a devoted ${genreName} reader would recognize as theirs from the first lines.`,
       "",
@@ -567,7 +555,7 @@
       "- The masterplot is one sentence in three clauses: A describes the protagonist, B starts and carries the action, C ends it. The protagonist is the character A unless the plot says it is B.",
       "- The main plot lists Plotto conflicts in story order; a step marked [ending] is a situation Cook marks as a way to end under that C clause. Bracketed codes are Cook's conflict numbers and notation; ignore them in your answer.",
       "- A subplot branches from the main line at the step named and must feed back into it.",
-      "- Characters are Plotto symbols (see the cast). Each has a working name, which the writer has already seen; use those names unless the genre or the writer's notes call for others.",
+      "- Characters are Plotto symbols (see the cast). Each has a working name, which the writer has already seen; use those names unless the genre calls for others.",
       "",
       "How Cook says to interpret it:",
       "- Every conflict is a Purpose meeting an Obstacle, stated or implied. Find both and dramatize their collision; suspense lives in it.",
@@ -579,7 +567,6 @@
       "",
       `The genre: ${genreName}. This brief is guidance for you, not text to copy: show it through the story's own events, people and details, and never repeat its wording.`,
       ...genreBrief(genreName),
-      notes ? `\nWriter's notes (follow these; where they differ from the genre brief, the notes win): ${notes}` : null,
       "",
       "Before you write the final answer, check the story and fix anything that fails:",
       "- every event follows from what came before it;",
@@ -736,7 +723,7 @@
     capability_removed: "This page can’t reach Claude here. Copy the prompt instead.",
     rate_limited: "Too many requests right now. Wait a minute and try again.",
     session_expired: "Your Claude session expired. Sign in again, then retry.",
-    refused: "The model declined this plot. Try another genre or different notes.",
+    refused: "The model declined this plot. Try another genre.",
     prompt_too_large: "This plot is too long to send. Generate a shorter one and try again.",
     empty_completion: "The model returned nothing. Try again with a different genre.",
     TypeError: "Couldn’t reach the AI writer. Check your connection and try again.",
@@ -759,13 +746,11 @@
     );
   }
 
-  const notes = () => $("notes").value.trim().slice(0, 1500);
-
   async function interpret() {
     const plot = G.plot;
     if (!plot || running) return;
     const id = plot.id;
-    const prompt = buildPrompt(plot, genre(), notes());
+    const prompt = buildPrompt(plot, genre());
     const show = (text) => keep(text, id);
 
     setRunning(true);
@@ -888,12 +873,7 @@
   $("interpret-go").addEventListener("click", interpret);
   $("interpret-stop").addEventListener("click", () => ctl && ctl.abort());
   $("out-copy").addEventListener("click", () => outText && copyText(outText));
-  $("prompt-copy").addEventListener("click", () => G.plot && copyText(buildPrompt(G.plot, genre(), notes())));
-  $("notes").value = I.notes || "";
-  $("notes").addEventListener("input", () => {
-    I.notes = $("notes").value;
-    store.set("interpret", I);
-  });
+  $("prompt-copy").addEventListener("click", () => G.plot && copyText(buildPrompt(G.plot, genre())));
 
   // ------------------------------------------------------------------ start
   // The page opens on a plot, so the first view shows what the machine makes.
