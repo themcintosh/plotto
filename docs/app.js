@@ -414,7 +414,6 @@
   const GENRE_BRIEFS = {
     Noir: {
       world: "A corrupt city, classically the 1940s or 1950s but any era with the same rot: rain, neon, cheap rooms, bars, back offices, precincts, docks. Money and power sit in the same few hands.",
-      voice: "Terse and hard-boiled: short declarative sentences, cynical wit, sharp similes, an eye for the seedy detail. Moral weight is shown, never preached.",
       promise: "A flawed protagonist is drawn into crime or compromise by desire, money or loyalty, and every choice tightens the trap. Everyone has a price or a secret, and the law is no safer than the crooks.",
       opposition: "A fatal lover, a crooked cop, a racketeer, a rich patron, a blackmailer, and the protagonist's own weakness.",
       translate: "An inheritance becomes insurance money, a payoff or a stolen roll of bills; a rival becomes a fixer or a crooked cop; a secret becomes leverage; a misunderstanding becomes a frame-up.",
@@ -423,7 +422,6 @@
     },
     "Science fiction": {
       world: "A future, an alternate present or another world, shaped by one or two clear scientific or technological premises (colonies, ships, artificial minds, biotechnology, a changed climate). The premise touches everything.",
-      voice: "Clear and concrete. Invented things are specific, and the reader infers the world from detail rather than lectures.",
       promise: "A what-if worked out honestly: the technology or discovery creates the dilemma, and the human conflict and the speculative idea turn out to be the same conflict.",
       opposition: "Institutions and corporations, artificial minds, the environment itself, scarcity, and people who misuse a new power.",
       translate: "A fortune becomes control of a resource, a patent or a ship; a telegram becomes a transmission; a disguise becomes a forged identity or a borrowed body; an estrangement can be distance, time dilation or a mind that has been changed.",
@@ -432,7 +430,6 @@
     },
     Fantasy: {
       world: "An invented world, or a hidden one beside ours, with its own history, peoples, powers and geography. Magic, where it exists, has rules and costs.",
-      voice: "Immersive and confident, with a texture that suits the world (mythic, courtly or earthy). Names and customs feel native, not borrowed.",
       promise: "Wonder and stakes: the protagonist's personal struggle is bound up with something larger (a house, a realm, a bargain with powers), and the world's rules shape every choice.",
       opposition: "Rival heirs, usurpers, oath-bound enemies, curses, prophecies, bargains with powers, monsters, and the price of magic.",
       translate: "An inheritance becomes a throne, a land or a binding oath; a disguise becomes a glamour or a shapechange; a secret becomes a true name or a hidden bloodline; a letter becomes a sending or an omen.",
@@ -441,7 +438,6 @@
     },
     Horror: {
       world: "An ordinary place made wrong: a house, a town, a ship, a body, a family. The familiar is the frame the dread works against.",
-      voice: "Controlled and sensory. Unease builds through small wrong details; withhold, then escalate. Fear comes from anticipation more than gore.",
       promise: "Dread that rises steadily: a threat (supernatural, human or psychological) grows, isolation tightens, and the protagonist's own flaw or secret is what lets it in.",
       opposition: "A haunting or entity, a monster, a cult, a contagion, a predator, or the protagonist's own mind and guilt.",
       translate: "A secret becomes something buried that returns; a disappearance becomes a taking; an obligation becomes a curse or a debt to something inhuman; mistaken identity becomes possession or a double.",
@@ -450,7 +446,6 @@
     },
     Romance: {
       world: "Any setting, so long as it gives the lovers reasons to keep meeting and reasons they cannot simply be together: class, family, rivalry, work, distance, a secret.",
-      voice: "Warm, intimate and emotionally precise, giving both lovers' feelings; tension in every exchange; wit welcome.",
       promise: "The love story is the main plot. The relationship grows through attraction and conflict to a crisis that seems to end it, then to a resolution earned by change in one or both lovers.",
       opposition: "Inner wounds and false beliefs first; then families, rivals, duty, secrets, money and bad timing.",
       translate: "Cook's obstacles to marriage (class, guardians, conditions on an inheritance, rivals) become equivalents with real emotional weight in the chosen setting; misunderstandings must come from character, not mere accident.",
@@ -459,7 +454,6 @@
     },
     Thriller: {
       world: "A setting with high stakes and a clock running: a city under threat, an institution, a border, a corporation, a family in danger.",
-      voice: "Fast, lean and propulsive: short scenes, cliffhanger turns, information released at the moment it does the most damage.",
       promise: "Danger from the first page and a deadline that keeps shrinking. The protagonist is outmatched, hunted or racing a plan, and each reversal raises the stakes.",
       opposition: "A capable antagonist with a plan, a conspiracy, assassins, and betrayers on the protagonist's own side.",
       translate: "A secret becomes evidence someone will kill for; a journey becomes a pursuit; a misunderstanding becomes a frame or a betrayal; an inheritance becomes a target painted on the heir.",
@@ -468,7 +462,6 @@
     },
     Mystery: {
       world: "A closed or knowable circle (a house, a village, a firm, a ship, a family) where everyone has a link to the crime and something to hide.",
-      voice: "Observant and precise, with a quiet intelligence. Details are planted in plain sight.",
       promise: "A puzzle played fair: a crime or riddle, an investigator (amateur or professional), suspects with motive and opportunity, clues and red herrings, and a solution the reader could have reached.",
       opposition: "The culprit, false trails, lies told for other reasons, and the investigator's own blind spots.",
       translate: "Cook's secrets and concealments become the evidence; his mistaken identities become suspects and alibis; his transgressions become the crime or its motive. Decide early who did what, and plant the clues to it in the synopsis.",
@@ -477,7 +470,6 @@
     },
     Western: {
       world: "The American frontier, roughly 1860 to 1900, or a frontier like it: open range, mining camps, railheads, cattle towns, homesteads, borderlands, with the law thin and far away.",
-      voice: "Plain, laconic and weathered. Landscape and weather act as forces; dialogue is spare and to the point.",
       promise: "A test of character where settlement meets the wild: a code of honor under pressure, land, water and justice at stake, and a reckoning.",
       opposition: "Cattle barons, railroad interests, outlaws, crooked lawmen, land grabbers, drought, distance and old debts.",
       translate: "A fortune becomes a claim, a herd, water rights or a strongbox; a rival becomes a rancher or a gunman; a disguise becomes an assumed name out West; letters come by stage or wire.",
@@ -486,7 +478,6 @@
     },
     Historical: {
       world: "A specific, real period and place, chosen to fit the plot. Its politics, customs, work, class and technology limit what people can do.",
-      voice: "Grounded and textured, with period detail woven in rather than listed, and dialogue that suggests the era without pastiche.",
       promise: "People shaped by their time, whose private conflict plays out against real forces of the period (war, reform, plague, migration, law), and who think and believe as people of their age did.",
       opposition: "The period's institutions and limits (law, church, class, the roles allowed to men and women, money, war), and personal rivals.",
       translate: "Keep Cook's situations where they fit the period and replace any that do not with true equivalents; let a real event of the time amplify the central situation. Name the period and place in the World section.",
@@ -495,7 +486,6 @@
     },
     Comedy: {
       world: "Any setting with rules, status and appearances to keep up: a family, an office, a small town, society, a wedding, rival firms.",
-      voice: "Light, quick and precise. The comedy comes from character, escalation and timing; deadpan narration is welcome.",
       promise: "Characters want something badly and make it worse. Misunderstandings, schemes and lies snowball to a big set piece, then unwind so that everyone gets roughly what they deserve.",
       opposition: "Rivals, busybodies, people in authority, rules, the protagonist's own vanity, and the snowball itself.",
       translate: "Cook's disguises, mistaken identities, pretenses and secret enterprises are already comic engines: escalate them. Grim situations become comic peril, humiliation or farce.",
@@ -504,7 +494,6 @@
     },
     Gothic: {
       world: "An old, isolated house, estate, abbey or town with a long memory: corridors, locked rooms, portraits, storms, ruins, family vaults. The past presses on the present.",
-      voice: "Atmospheric, heightened and brooding, with mounting suspense; the setting mirrors the characters' feelings.",
       promise: "Secrets of family, inheritance and transgression; a vulnerable protagonist in a place they do not understand; the uncanny, which may or may not be supernatural; desire and danger bound together.",
       opposition: "A domineering master or mistress of the house, an ancestral curse, a hidden earlier marriage or crime, madness, the house itself.",
       translate: "Cook's inheritances, hidden identities, secret marriages and family obligations fit naturally: make them the house's secrets and reveal them in stages.",
@@ -513,7 +502,6 @@
     },
     Literary: {
       world: "A precisely observed real setting, chosen for what it reveals about the characters; ordinary life rendered with specificity.",
-      voice: "Close and nuanced, attentive to inner life, memory and contradiction; subtext over statement; a distinctive but controlled style.",
       promise: "Character is the plot: the outward events of the masterplot are the occasion for an inner change or revelation, and meaning grows from the specific.",
       opposition: "Mostly internal (self-deception, grief, desire, conscience), meeting real social pressures and other people's needs.",
       translate: "Turn Cook's melodrama into plausible, human-scale events without losing their force: a transgression can be a betrayal of trust, a fortune an opportunity that tests a person's values.",
@@ -523,7 +511,6 @@
   };
   const BRIEF_FIELDS = [
     ["world", "World"],
-    ["voice", "Voice"],
     ["promise", "What its readers expect"],
     ["opposition", "Who or what opposes the protagonist"],
     ["translate", "Translating Cook's situations"],
@@ -539,9 +526,10 @@
 
   // The reading rules follow Cook's introduction and his Instruction Manual (Lessons 2, 3, 5 and 6).
   // The genre brief comes last, just before the checks and the format, where a model weighs it most.
+  // The genre sets the story's world; the write-up itself is a plain, mechanical synopsis, never literary.
   function buildPrompt(plot, genreName) {
     return [
-      `You are a story developer who specializes in ${genreName} fiction. Below is a plot built with PLOTTO, William Wallace Cook's 1928 system of plot suggestion. Fashion it into a ${genreName} story that a devoted ${genreName} reader would recognize as theirs from the first lines.`,
+      `You are a story developer who specializes in ${genreName} fiction. Below is a plot built with PLOTTO, William Wallace Cook's 1928 system of plot suggestion. Fashion it into one coherent ${genreName} story, and write it up as a plain synopsis: a technical, mechanical account of what happens, not a piece of fiction.`,
       "",
       "Everything in this request is private working material for you. The reader sees only the finished treatment, which must read as an original story, with no trace of how it was made (the last rule below says exactly what to leave out).",
       "",
@@ -549,7 +537,7 @@
       "- Treat the masterplot, the situations and any subplot as raw material from which to fashion one story. They were chosen by chance along Cook's cross-references, so as they stand they may not fit together: places, circumstances and relationships can clash from one situation to the next.",
       "- Select, merge, reorder, cut, combine or adapt them as the story needs, and invent the connecting events that let each one follow from the last.",
       "- Keep the masterplot's shape: its protagonist, the action of its B clause and the outcome of its C clause. Keep the situation marked [central situation] at the heart of the story, and let the ending play out the C clause.",
-      `- The masterplot decides what happens; the genre decides how it is told. When a situation does not fit ${genreName} as written, translate it into the genre's terms (see the brief below) rather than drop it.`,
+      `- The masterplot decides what happens; the genre decides the world it happens in. When a situation does not fit ${genreName} as written, translate it into the genre's terms (see the brief below) rather than drop it.`,
       "",
       "How to read the plot:",
       "- The masterplot is one sentence in three clauses: A describes the protagonist, B starts and carries the action, C ends it. The protagonist is the character A unless the plot says it is B.",
@@ -558,14 +546,14 @@
       "- Characters are Plotto symbols (see the cast). Each has a working name, which the writer has already seen; use those names unless the genre calls for others.",
       "",
       "How Cook says to interpret it:",
-      "- Every conflict is a Purpose meeting an Obstacle, stated or implied. Find both and dramatize their collision; suspense lives in it.",
+      "- Every conflict is a Purpose meeting an Obstacle, stated or implied. Find both; what happens when they collide is the event to report.",
       "- Nothing is to be used literally. Concrete details in a conflict (a satchel, a dance hall, a telegram) only illustrate the situation: replace them with original equivalents from the genre's world.",
       "- Let the situations decide the characters: build each person as the logical explanation of their purpose and obstacle, and let the obstacle suggest the antagonist.",
       "- Write simply, and begin in the story rather than before it.",
       "",
       E.plotToText(plot),
       "",
-      `The genre: ${genreName}. This brief is guidance for you, not text to copy: show it through the story's own events, people and details, and never repeat its wording.`,
+      `The genre: ${genreName}. This brief is guidance for you, not text to copy: let it decide the story's setting, people and events, and never repeat its wording. It does not change how the synopsis is written (see the style rules below).`,
       ...genreBrief(genreName),
       "",
       "Before you write the final answer, check the story and fix anything that fails:",
@@ -573,18 +561,25 @@
       "- every character can be where the story puts them, and knows what they act on;",
       "- every character's motive is clear;",
       "- nothing contradicts anything else, including who is related to whom;",
-      `- a ${genreName} reader would recognize it as ${genreName}: its world, voice, conflicts and ending all keep the brief;`,
+      `- its world, conflicts and outcome keep the ${genreName} brief;`,
+      "- the synopsis follows the plot's situations in order and ends on the outcome;",
+      "- the writing keeps every style rule below;",
       "- the treatment says nothing about how it was made: none of the words or labels listed in the last rule below appear in it.",
       "Give only the finished treatment, not your checking.",
       "",
-      `Write the treatment in Markdown, in the voice of ${genreName}, with these sections, in order:`,
+      "Style rules (these apply to every section):",
+      "- Write plainly and mechanically, like a technical plot summary: who does what, why, and what results. One event per sentence where you can.",
+      "- Present tense, third person, neutral and literal language.",
+      "- No metaphors, similes, imagery, atmosphere, wordplay, rhetorical questions, dramatic one-line paragraphs, cliffhangers or withheld reveals. Do not comment on themes or meaning, and do not editorialize.",
+      "- State what a character feels or believes only when it explains what they do, and say it in a few plain words.",
+      "",
+      "Write the treatment in Markdown with these sections, in order:",
       "1. A level-2 heading with the story's title.",
-      "2. **Logline.** One or two sentences.",
-      "3. ### World: two or three sentences on where and when the story takes place, and its tone.",
-      "4. ### Characters: a bulleted list naming each character, with a one-line sketch.",
-      "5. ### Synopsis: the story in order, in short paragraphs, with any secondary storyline woven in.",
-      "6. ### Ending: how the story ends, and what it costs or gives the protagonist.",
-      "Keep it under 900 words.",
+      "2. **Logline.** One plain sentence: the protagonist, what they do, and how it ends.",
+      "3. ### World: two or three factual sentences on where and when the story takes place.",
+      "4. ### Characters: a bulleted list naming each character, with a one-line factual description of who they are and what they want.",
+      "5. ### Synopsis: an expanded version of the logline that follows the plot's situations in order, in short paragraphs, with any secondary storyline woven in. Its last sentence states how the story ends, plainly and in one sentence. There is no separate ending section.",
+      "Keep it under 700 words.",
       "",
       "Last rule: never refer to the structure of this request or the mechanics behind the story. The treatment must not mention Plotto or Cook; the masterplot; clauses of any kind (A, B or C clause); the central situation, lead-ups, carry-ons, subplots, steps or their numbers; conflicts by number; Purpose and Obstacle as terms; the genre brief or genre conventions; raw material; working names; character symbols such as A, B or A-3; or anything in square brackets. Speak only of the characters, their world and what happens to them.",
     ]
