@@ -5,7 +5,7 @@
  * empty to use the local server (python3 server.py) or, on claude.ai, the viewer's own Claude.
  */
 window.PLOTTO_CONFIG = {
-  writerUrl: "https://script.google.com/macros/s/AKfycbwoxf3mkj8azrF_XxS-c6rS-OBj2sZLjwbfG9HpVAw2zhnWuZkEqOtsd43N7ZAolh7N/exec",
+  writerUrl: "https://script.google.com/macros/s/AKfycbzjysxhdT7AtYveLLi1Qk3wE7he5XjvS-E46_PCQWQ-m6XPxf7M-t_G1R_XV7MnZvcG/exec",
   // The newsletter named in the notice under the email field, and an optional link for its name.
   newsletter: "Solution Space",
   newsletterUrl: "https://ideachemistry.substack.com/subscribe",
