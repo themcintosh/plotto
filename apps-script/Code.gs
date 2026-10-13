@@ -324,7 +324,7 @@ function askClaude(prompt, genre, props) {
     return {
       ok: false,
       code: "refused",
-      message: "The model declined this plot." + notUsed + " Try another genre or different notes.",
+      message: "The model declined this plot." + notUsed + " Try another genre.",
       usage,
       detail: "refusal " + ((data.stop_details && data.stop_details.category) || ""),
     };
